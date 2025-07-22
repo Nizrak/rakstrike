@@ -2,15 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>0NLINE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAKSTRIKE // SYSTEM ONLINE</title>
   <style>
     body {
-      background-color: #000;
-      color: #00FF00;
+      background-color: #000000;
+      color: #00BFFF;
       font-family: 'Courier New', Courier, monospace;
+      margin: 0;
       padding: 2rem;
+      overflow-x: hidden;
+      background-image: radial-gradient(rgba(0,191,255,0.05) 1px, transparent 0);
+      background-size: 20px 20px;
+      position: relative;
+    }
+    h1 {
+      text-align: center;
+      letter-spacing: 2px;
+      font-size: 3rem;
+      color: #00BFFF;
+      text-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF;
+      animation: neonPulse 2s infinite alternate ease-in-out;
+    }
+    @keyframes neonPulse {
+      from {
+        text-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF;
+        opacity: 0.9;
+      }
+      to {
+        text-shadow: 0 0 15px #00BFFF, 0 0 30px #00BFFF;
+        opacity: 1;
+      }
+    }
+    .console {
+      max-width: 900px;
+      margin: 2rem auto;
+      background-color: rgba(0,191,255,0.05);
+      padding: 2rem;
+      border: 1px solid #00BFFF;
+      box-shadow: 0 0 16px #00BFFF;
+      border-radius: 8px;
+    }
+    .console-line {
+      margin: 0.4rem 0;
+      animation: typewriter 1.5s steps(30, end) 1;
       overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid #00BFFF;
+    }
+    .prompt::before {
+      content: '> ';
     }
     .scanline {
       animation: blink 1s infinite;
@@ -19,23 +60,50 @@
       0%, 50%, 100% { opacity: 1; }
       25%, 75% { opacity: 0; }
     }
-    .console-line {
-      margin: 0.3rem 0;
+    @keyframes typewriter {
+      from { width: 0; }
+      to { width: 100%; }
     }
-    .prompt::before {
-      content: '> ';
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .footer {
+      margin-top: 3rem;
+      border-top: 1px solid #00BFFF;
+      padding-top: 1rem;
+      font-size: 0.95rem;
+      animation: fadeIn 2s ease-in-out;
+      text-align: center;
+      line-height: 1.7;
+    }
+    a {
+      color: #00BFFF;
+      text-decoration: underline;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #00a0e0;
+    }
+    .glow {
+      text-shadow: 0 0 10px #00BFFF;
+      font-weight: bold;
+    }
+    .terminal-border {
+      border-left: 4px solid #00BFFF;
+      padding-left: 1rem;
     }
   </style>
 </head>
 <body>
-  <h1>RAKSTRIKE // SYSTEM ONLINE</h1>
-  <div class="console">
+  <h1>☣ RAKSTRIKE ENGAGED ☣</h1>
+  <div class="console terminal-border">
     <p class="console-line">Initializing secure connection...</p>
     <p class="console-line">Bypassing firewalls...</p>
     <p class="console-line">Accessing darknet protocols...</p>
     <p class="console-line">Loading payload modules: [ ██████████████ ]</p>
-    <p class="console-line">Identity confirmed: <strong>Nizrak</strong></p>
-    <p class="console-line">Status: <span style="color: lime">ACTIVE</span></p>
+    <p class="console-line glow">Identity confirmed: <strong>Nizrak</strong></p>
+    <p class="console-line">Status: <span style="color: cyan">ACTIVE</span></p>
     <br>
     <p class="console-line prompt">Operation: Monitoring surveillance networks</p>
     <p class="console-line prompt">Target: Global data stream</p>
@@ -43,6 +111,12 @@
     <br>
     <p class="console-line"><span class="scanline">█</span> Awaiting next command...</p>
   </div>
+
+  <div class="footer">
+    <p>📧 Contact Agent: <a href="mailto:nizrak@rakstrike.icu">nizrak@rakstrike.icu</a></p>
+    <p>💬 Join HQ Command: <a href="https://discord.gg/t64cPpCYMy" target="_blank">Discord Server</a></p>
+    <p>🌐 Domain Node: <a href="https://rakstrike.icu">rakstrike.icu</a></p>
+    <p class="glow">🔒 Secure Layer Active — All transmissions monitored in real-time.</p>
+  </div>
 </body>
 </html>
-
