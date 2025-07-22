@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RAKSTRIKE // SYSTEM ONLINE</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+    
     body {
       background-color: #000000;
       color: #00BFFF;
@@ -12,173 +16,562 @@
       margin: 0;
       padding: 2rem;
       overflow-x: hidden;
-      background-image: radial-gradient(rgba(0,191,255,0.05) 1px, transparent 0);
-      background-size: 20px 20px;
+      min-height: 100vh;
       position: relative;
     }
-    h1 {
-      text-align: center;
-      letter-spacing: 2px;
-      font-size: 3rem;
-      color: #00BFFF;
-      text-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF;
-      animation: neonPulse 2s infinite alternate ease-in-out;
+    
+    /* Animated matrix background */
+    .matrix-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: radial-gradient(circle at center, rgba(0,191,255,0.03) 0%, rgba(0,0,0,0.8) 70%);
+      animation: matrixShift 20s linear infinite;
     }
-    @keyframes neonPulse {
-      from {
-        text-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF;
-        opacity: 0.9;
+    
+    @keyframes matrixShift {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
+    }
+    
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    .particle {
+      position: absolute;
+      background: #00BFFF;
+      border-radius: 50%;
+      animation: float 15s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
       }
-      to {
-        text-shadow: 0 0 15px #00BFFF, 0 0 30px #00BFFF;
+      10% {
         opacity: 1;
       }
-    }
-    .animated-logo {
-      display: block;
-      margin: 0 auto 2rem;
-      width: 100px;
-      height: 100px;
-      animation: flickerPulse 1.5s infinite alternate ease-in-out;
-    }
-    @keyframes flickerPulse {
-      0% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 2px #00BFFF);
-        opacity: 0.8;
-      }
-      50% {
-        transform: scale(1.15);
-        filter: drop-shadow(0 0 12px #00BFFF);
+      90% {
         opacity: 1;
       }
       100% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 2px #00BFFF);
-        opacity: 0.8;
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
       }
     }
-    .console {
-      max-width: 900px;
-      margin: 2rem auto;
-      background-color: rgba(0,191,255,0.05);
-      padding: 2rem;
-      border: 1px solid #00BFFF;
-      box-shadow: 0 0 16px #00BFFF;
-      border-radius: 8px;
+    
+    h1 {
+      text-align: center;
+      letter-spacing: 3px;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: #00BFFF;
+      text-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF;
+      animation: neonPulse 2s infinite alternate ease-in-out;
+      margin-bottom: 2rem;
+      position: relative;
     }
+    
+    h1::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00BFFF, transparent);
+      transform: translate(-50%, -50%);
+      animation: scanLine 3s infinite;
+    }
+    
+    @keyframes scanLine {
+      0%, 100% { opacity: 0; width: 0%; }
+      50% { opacity: 1; width: 120%; }
+    }
+    
+    @keyframes neonPulse {
+      from {
+        text-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF;
+        transform: scale(1);
+      }
+      to {
+        text-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF;
+        transform: scale(1.02);
+      }
+    }
+    
+    .animated-logo {
+      display: block;
+      margin: 0 auto 2rem;
+      width: 120px;
+      height: 120px;
+      animation: logoRotate 8s linear infinite;
+      filter: drop-shadow(0 0 15px #00BFFF);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .animated-logo:hover {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 25px #00BFFF);
+    }
+    
+    @keyframes logoRotate {
+      0% {
+        transform: rotate(0deg) scale(1);
+        filter: drop-shadow(0 0 10px #00BFFF);
+      }
+      25% {
+        transform: rotate(90deg) scale(1.05);
+        filter: drop-shadow(0 0 20px #00BFFF);
+      }
+      50% {
+        transform: rotate(180deg) scale(1);
+        filter: drop-shadow(0 0 15px #00BFFF);
+      }
+      75% {
+        transform: rotate(270deg) scale(1.05);
+        filter: drop-shadow(0 0 20px #00BFFF);
+      }
+      100% {
+        transform: rotate(360deg) scale(1);
+        filter: drop-shadow(0 0 10px #00BFFF);
+      }
+    }
+    
+    .console {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: linear-gradient(135deg, rgba(0,191,255,0.1), rgba(0,191,255,0.03));
+      padding: 2.5rem;
+      border: 2px solid #00BFFF;
+      box-shadow: 
+        0 0 20px rgba(0,191,255,0.3),
+        inset 0 0 20px rgba(0,191,255,0.05);
+      border-radius: 12px;
+      position: relative;
+      backdrop-filter: blur(5px);
+    }
+    
+    .console::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #00BFFF, transparent, #00BFFF, transparent);
+      border-radius: 12px;
+      z-index: -1;
+      animation: borderGlow 4s linear infinite;
+    }
+    
+    @keyframes borderGlow {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 400% 400%; }
+    }
+    
     .console-line {
-      margin: 0.4rem 0;
-      animation: typewriter 1.5s steps(30, end) 1;
+      margin: 0.8rem 0;
+      animation: typewriter 2s steps(40, end) forwards;
       overflow: hidden;
       white-space: nowrap;
-      border-right: 2px solid #00BFFF;
+      border-right: 3px solid #00BFFF;
+      position: relative;
+      transition: all 0.3s ease;
     }
+    
+    .console-line:hover {
+      color: #00FFFF;
+      text-shadow: 0 0 8px #00FFFF;
+      transform: translateX(10px);
+    }
+    
+    .console-line.typed {
+      animation: none;
+      border-right: none;
+    }
+    
     .prompt::before {
       content: '> ';
+      color: #00FF00;
+      font-weight: bold;
+      text-shadow: 0 0 5px #00FF00;
     }
+    
+    .status-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+      padding: 1rem;
+      background: rgba(0,191,255,0.05);
+      border-radius: 8px;
+      border: 1px solid rgba(0,191,255,0.3);
+    }
+    
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem;
+      background: rgba(0,0,0,0.5);
+      border-radius: 4px;
+      border-left: 3px solid #00BFFF;
+    }
+    
+    .status-value {
+      font-weight: bold;
+      color: #00FF00;
+      text-shadow: 0 0 5px #00FF00;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background: rgba(0,0,0,0.8);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1rem 0;
+      border: 1px solid #00BFFF;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00BFFF, #00FFFF, #00BFFF);
+      background-size: 200% 100%;
+      animation: progressFlow 2s linear infinite, progressLoad 4s ease-in-out forwards;
+      border-radius: inherit;
+    }
+    
+    @keyframes progressFlow {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    
+    @keyframes progressLoad {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+    
     .scanline {
-      animation: blink 1s infinite;
+      animation: blink 0.8s infinite;
+      font-size: 1.2em;
+      color: #00FF00;
     }
+    
     @keyframes blink {
-      0%, 50%, 100% { opacity: 1; }
-      25%, 75% { opacity: 0; }
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
     }
+    
     @keyframes typewriter {
-      from { width: 0; }
-      to { width: 100%; }
+      0% { 
+        width: 0; 
+        border-right-color: #00BFFF;
+      }
+      99% { 
+        border-right-color: #00BFFF;
+      }
+      100% { 
+        width: 100%; 
+        border-right-color: transparent;
+      }
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    
     .footer {
       margin-top: 3rem;
-      border-top: 1px solid #00BFFF;
-      padding-top: 1rem;
-      font-size: 0.95rem;
-      animation: fadeIn 2s ease-in-out;
+      border-top: 2px solid #00BFFF;
+      padding-top: 2rem;
+      font-size: 1rem;
       text-align: center;
-      line-height: 1.7;
+      line-height: 2;
+      animation: slideUp 1s ease-out;
     }
-    a {
-      color: #00BFFF;
+    
+    @keyframes slideUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+    
+    .link-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 1.5rem 0;
+    }
+    
+    .icon-link {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: rgba(0,191,255,0.1);
+      border: 1px solid #00BFFF;
+      border-radius: 8px;
       text-decoration: none;
-      transition: color 0.3s;
+      color: #00BFFF;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-    a:hover {
-      color: #00a0e0;
+    
+    .icon-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,191,255,0.2), transparent);
+      transition: left 0.5s ease;
     }
+    
+    .icon-link:hover::before {
+      left: 100%;
+    }
+    
+    .icon-link:hover {
+      background: rgba(0,191,255,0.2);
+      box-shadow: 0 0 15px rgba(0,191,255,0.4);
+      transform: translateY(-3px);
+      color: #00FFFF;
+    }
+    
+    .icon-link img {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+      filter: brightness(0) saturate(100%) invert(58%) sepia(96%) saturate(3784%) hue-rotate(180deg);
+    }
+    
     .glow {
-      text-shadow: 0 0 10px #00BFFF;
+      text-shadow: 0 0 15px #00BFFF;
       font-weight: bold;
+      animation: textGlow 3s ease-in-out infinite alternate;
     }
+    
+    @keyframes textGlow {
+      from { text-shadow: 0 0 15px #00BFFF, 0 0 25px #00BFFF; }
+      to { text-shadow: 0 0 20px #00FFFF, 0 0 35px #00FFFF; }
+    }
+    
     .terminal-border {
       border-left: 4px solid #00BFFF;
-      padding-left: 1rem;
+      padding-left: 1.5rem;
+      position: relative;
     }
-    .icon-link img {
-      width: 20px;
-      height: 20px;
-      vertical-align: middle;
-      margin-right: 8px;
+    
+    .terminal-border::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #00BFFF, #00FFFF, #00BFFF);
+      animation: borderPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes borderPulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .console {
+        padding: 1.5rem;
+        margin: 1rem auto;
+      }
+      
+      .link-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .status-bar {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="matrix-bg"></div>
+  <div class="particles"></div>
+  
   <svg class="animated-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="sparkPulse" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#00BFFF" stop-opacity="1"/>
-      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
-    </radialGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-  </defs>
-  <circle cx="100" cy="100" r="90" fill="url(#sparkPulse)" stroke="#00BFFF" stroke-width="2" filter="url(#glow)" />
-  <polygon points="100,30 110,85 160,85 115,115 130,170 100,135 70,170 85,115 40,85 90,85" fill="#00BFFF" filter="url(#glow)">
-    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="10s" repeatCount="indefinite" />
-  </polygon>
-</svg>
+    <defs>
+      <radialGradient id="sparkPulse" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#00FFFF" stop-opacity="1"/>
+        <stop offset="50%" stop-color="#00BFFF" stop-opacity="0.8"/>
+        <stop offset="100%" stop-color="#000080" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    <circle cx="100" cy="100" r="85" fill="url(#sparkPulse)" stroke="#00BFFF" stroke-width="3" filter="url(#glow)" opacity="0.8" />
+    <polygon points="100,25 115,80 170,80 125,115 140,170 100,140 60,170 75,115 30,80 85,80" fill="#00BFFF" filter="url(#glow)" stroke="#00FFFF" stroke-width="1">
+    </polygon>
+  </svg>
+  
   <h1>☣ RAKSTRIKE ENGAGED ☣</h1>
+  
   <div class="console terminal-border">
-    <p class="console-line">Initializing secure connection...</p>
-    <p class="console-line">Bypassing firewalls...</p>
-    <p class="console-line">Accessing darknet protocols...</p>
-    <p class="console-line">Loading payload modules: [ ██████████████ ]</p>
-    <p class="console-line glow">Identity confirmed: <strong>Nizrak</strong></p>
-    <p class="console-line">Status: <span style="color: cyan">ACTIVE</span></p>
+    <div class="status-bar">
+      <div class="status-item">
+        <span>Connection</span>
+        <span class="status-value">SECURE</span>
+      </div>
+      <div class="status-item">
+        <span>Encryption</span>
+        <span class="status-value">AES-256</span>
+      </div>
+      <div class="status-item">
+        <span>Ping</span>
+        <span class="status-value">12ms</span>
+      </div>
+      <div class="status-item">
+        <span>Nodes</span>
+        <span class="status-value">847</span>
+      </div>
+    </div>
+    
+    <p class="console-line">Initializing quantum encryption protocols...</p>
+    <p class="console-line">Establishing secure darknet tunnels...</p>
+    <p class="console-line">Bypassing international firewalls...</p>
+    <p class="console-line">Synchronizing with satellite networks...</p>
+    
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+    
+    <p class="console-line glow">Identity confirmed: <strong>Nizrak</strong> | Access Level: OMEGA</p>
+    <p class="console-line">Biometric scan: <span style="color: #00FF00">VERIFIED</span></p>
+    <p class="console-line">Neural interface: <span style="color: cyan">SYNCHRONIZED</span></p>
     <br>
-    <p class="console-line prompt">Operation: Monitoring surveillance networks</p>
-    <p class="console-line prompt">Target: Global data stream</p>
-    <p class="console-line prompt">Authorization: Granted</p>
+    <p class="console-line prompt">Operation: Global surveillance matrix</p>
+    <p class="console-line prompt">Target: Worldwide data streams</p>
+    <p class="console-line prompt">Authorization: OMEGA CLEARANCE GRANTED</p>
+    <p class="console-line prompt">Threat Level: DEFCON 2</p>
     <br>
-    <p class="console-line"><span class="scanline">█</span> Awaiting next command...</p>
+    <p class="console-line"><span class="scanline">█</span> System ready. Awaiting quantum commands...</p>
   </div>
 
   <div class="footer">
-    <p class="icon-link">
-      <img src="https://img.icons8.com/ios-filled/50/00BFFF/new-post.png" alt="Email Icon"/>
-      <a href="mailto:nizrak@rakstrike.icu">nizrak@rakstrike.icu</a>
-    </p>
-    <p class="icon-link">
-      <img src="https://img.icons8.com/ios-glyphs/30/00BFFF/discord-logo.png" alt="Discord Icon"/>
-      <a href="https://discord.gg/t64cPpCYMy" target="_blank">Join Discord Server</a>
-    </p>
-    <p class="icon-link">
-      <img src="https://img.icons8.com/ios-filled/50/00BFFF/domain.png" alt="Domain Icon"/>
-      <a href="https://rakstrike.icu">rakstrike.icu</a>
-    </p>
-    <p class="glow">🔒 Secure Layer Active — All transmissions monitored in real-time.</p>
+    <div class="link-container">
+      <a href="mailto:nizrak@rakstrike.icu" class="icon-link">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/new-post.png" alt="Email"/>
+        nizrak@rakstrike.icu
+      </a>
+      <a href="https://discord.gg/t64cPpCYMy" target="_blank" class="icon-link">
+        <img src="https://img.icons8.com/ios-glyphs/30/ffffff/discord-logo.png" alt="Discord"/>
+        Join Discord Server
+      </a>
+      <a href="https://rakstrike.icu" class="icon-link">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/domain.png" alt="Domain"/>
+        rakstrike.icu
+      </a>
+    </div>
+    <p class="glow">🔒 QUANTUM ENCRYPTION ACTIVE — All transmissions secured via neural blockchain.</p>
   </div>
 
-  <audio autoplay loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c93e3c5dbe.mp3?filename=matrix-digital-rain-sound-111541.mp3" type="audio/mpeg">
-  </audio>
+  <script>
+    // Create floating particles
+    function createParticles() {
+      const container = document.querySelector('.particles');
+      const particleCount = 20;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.width = particle.style.height = (Math.random() * 4 + 1) + 'px';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        container.appendChild(particle);
+      }
+    }
+    
+    // Animate console lines sequentially
+    function animateConsoleLines() {
+      const lines = document.querySelectorAll('.console-line');
+      lines.forEach((line, index) => {
+        line.style.animationDelay = (index * 0.3) + 's';
+        setTimeout(() => {
+          line.classList.add('typed');
+        }, (index * 300) + 2000);
+      });
+    }
+    
+    // Add interactive logo click
+    function setupLogoInteraction() {
+      const logo = document.querySelector('.animated-logo');
+      logo.addEventListener('click', () => {
+        logo.style.animation = 'logoRotate 1s linear';
+        setTimeout(() => {
+          logo.style.animation = 'logoRotate 8s linear infinite';
+        }, 1000);
+      });
+    }
+    
+    // Dynamic status updates
+    function updateStatus() {
+      const pingElement = document.querySelector('.status-item:nth-child(3) .status-value');
+      const nodesElement = document.querySelector('.status-item:nth-child(4) .status-value');
+      
+      setInterval(() => {
+        const ping = Math.floor(Math.random() * 20) + 8;
+        const nodes = Math.floor(Math.random() * 100) + 800;
+        pingElement.textContent = ping + 'ms';
+        nodesElement.textContent = nodes;
+      }, 3000);
+    }
+    
+    // Initialize everything when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+      animateConsoleLines();
+      setupLogoInteraction();
+      updateStatus();
+    });
+    
+    // Add glitch effect on hover
+    document.querySelectorAll('.console-line').forEach(line => {
+      line.addEventListener('mouseenter', () => {
+        line.style.textShadow = '2px 0 #ff0000, -2px 0 #00ffff';
+        setTimeout(() => {
+          line.style.textShadow = '';
+        }, 200);
+      });
+    });
+  </script>
 </body>
 </html>
