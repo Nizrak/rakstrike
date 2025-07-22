@@ -34,6 +34,30 @@
         opacity: 1;
       }
     }
+    .animated-logo {
+      display: block;
+      margin: 0 auto 2rem;
+      width: 100px;
+      height: 100px;
+      animation: flickerPulse 1.5s infinite alternate ease-in-out;
+    }
+    @keyframes flickerPulse {
+      0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 2px #00BFFF);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 12px #00BFFF);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 2px #00BFFF);
+        opacity: 0.8;
+      }
+    }
     .console {
       max-width: 900px;
       margin: 2rem auto;
@@ -79,7 +103,7 @@
     }
     a {
       color: #00BFFF;
-      text-decoration: underline;
+      text-decoration: none;
       transition: color 0.3s;
     }
     a:hover {
@@ -93,16 +117,41 @@
       border-left: 4px solid #00BFFF;
       padding-left: 1rem;
     }
+    .icon-link img {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
   </style>
 </head>
 <body>
-  <h1>☣ RAKSTRIKE ENGAGED ☣</h1>
+  <svg class="animated-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="sparkPulse" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00BFFF" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="100" cy="100" r="90" fill="url(#sparkPulse)" stroke="#00BFFF" stroke-width="2" filter="url(#glow)" />
+  <polygon points="100,30 110,85 160,85 115,115 130,170 100,135 70,170 85,115 40,85 90,85" fill="#00BFFF" filter="url(#glow)">
+    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="10s" repeatCount="indefinite" />
+  </polygon>
+</svg>
+  <h1>⚡ RAKSTRIKE ENGAGED ⚡</h1>
   <div class="console terminal-border">
     <p class="console-line">Initializing secure connection...</p>
     <p class="console-line">Bypassing firewalls...</p>
     <p class="console-line">Accessing darknet protocols...</p>
     <p class="console-line">Loading payload modules: [ ██████████████ ]</p>
-    <p class="console-line glow">Identity confirmed: <strong>Nizrak</strong></p>
+    <p class="console-line glow">Identity confirmed: <strong>RAKSTRIKE</strong></p>
     <p class="console-line">Status: <span style="color: cyan">ACTIVE</span></p>
     <br>
     <p class="console-line prompt">Operation: Monitoring surveillance networks</p>
@@ -113,10 +162,23 @@
   </div>
 
   <div class="footer">
-    <p>📧 Contact Agent: <a href="mailto:nizrak@rakstrike.icu">nizrak@rakstrike.icu</a></p>
-    <p>💬 Join HQ Command: <a href="https://discord.gg/t64cPpCYMy" target="_blank">Discord Server</a></p>
-    <p>🌐 Domain Node: <a href="https://rakstrike.icu">rakstrike.icu</a></p>
+    <p class="icon-link">
+      <img src="https://img.icons8.com/ios-filled/50/00BFFF/new-post.png" alt="Email Icon"/>
+      <a href="mailto:nizrak@rakstrike.icu">nizrak@rakstrike.icu</a>
+    </p>
+    <p class="icon-link">
+      <img src="https://img.icons8.com/ios-glyphs/30/00BFFF/discord-logo.png" alt="Discord Icon"/>
+      <a href="https://discord.gg/t64cPpCYMy" target="_blank">Join Discord Server</a>
+    </p>
+    <p class="icon-link">
+      <img src="https://img.icons8.com/ios-filled/50/00BFFF/domain.png" alt="Domain Icon"/>
+      <a href="https://rakstrike.icu">rakstrike.icu</a>
+    </p>
     <p class="glow">🔒 Secure Layer Active — All transmissions monitored in real-time.</p>
   </div>
+
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c93e3c5dbe.mp3?filename=matrix-digital-rain-sound-111541.mp3" type="audio/mpeg">
+  </audio>
 </body>
 </html>
