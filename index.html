@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>0NLINE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #000;
+      color: #00FF00;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 2rem;
+      overflow: hidden;
+    }
+    .scanline {
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
+    }
+    .console-line {
+      margin: 0.3rem 0;
+    }
+    .prompt::before {
+      content: '> ';
+    }
+  </style>
+</head>
+<body>
+  <h1>RAKSTRIKE // SYSTEM ONLINE</h1>
+  <div class="console">
+    <p class="console-line">Initializing secure connection...</p>
+    <p class="console-line">Bypassing firewalls...</p>
+    <p class="console-line">Accessing darknet protocols...</p>
+    <p class="console-line">Loading payload modules: [ ██████████████ ]</p>
+    <p class="console-line">Identity confirmed: <strong>Nizrak</strong></p>
+    <p class="console-line">Status: <span style="color: lime">ACTIVE</span></p>
+    <br>
+    <p class="console-line prompt">Operation: Monitoring surveillance networks</p>
+    <p class="console-line prompt">Target: Global data stream</p>
+    <p class="console-line prompt">Authorization: Granted</p>
+    <br>
+    <p class="console-line"><span class="scanline">█</span> Awaiting next command...</p>
+  </div>
+</body>
+</html>
+
