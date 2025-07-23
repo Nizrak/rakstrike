@@ -3,41 +3,184 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RAKSTRIKE // SYSTEM ONLINE</title>
+  <title>RAKSTRIKE // QUANTUM INITIALIZATION</title>
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    
+
     body {
       background-color: #000000;
       color: #00BFFF;
       font-family: 'Courier New', Courier, monospace;
-      margin: 0;
-      padding: 2rem;
       overflow-x: hidden;
       min-height: 100vh;
       position: relative;
+      cursor: crosshair;
     }
-    
-    /* Animated matrix background */
+
+    /* Boot Screen */
+    .boot-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #000000, #001133, #000000);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      animation: bootFlicker 0.1s infinite;
+    }
+
+    .boot-screen.hidden {
+      animation: bootShutdown 2s ease-out forwards;
+    }
+
+    @keyframes bootFlicker {
+      0%, 98% { opacity: 1; }
+      99%, 100% { opacity: 0.98; }
+    }
+
+    @keyframes bootShutdown {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.02); }
+      100% { opacity: 0; transform: scale(0.8); pointer-events: none; }
+    }
+
+    .boot-logo {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 2rem;
+      animation: bootLogoSpin 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 30px #00BFFF) drop-shadow(0 0 60px #00FFFF);
+    }
+
+    @keyframes bootLogoSpin {
+      0% { transform: rotate(0deg) scale(0.8); opacity: 0.5; }
+      50% { transform: rotate(180deg) scale(1.2); opacity: 1; }
+      100% { transform: rotate(360deg) scale(0.8); opacity: 0.5; }
+    }
+
+    .boot-text {
+      font-size: 1.5rem;
+      text-align: center;
+      color: #00FFFF;
+      text-shadow: 0 0 20px #00FFFF;
+      animation: bootTextPulse 2s ease-in-out infinite;
+      margin-bottom: 2rem;
+    }
+
+    @keyframes bootTextPulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+
+    .boot-progress {
+      width: 400px;
+      height: 8px;
+      background: rgba(0,191,255,0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .boot-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00BFFF, #00FFFF, #FFFFFF, #00FFFF, #00BFFF);
+      background-size: 200% 100%;
+      animation: bootProgressFill 5s ease-out forwards, bootProgressFlow 1s linear infinite;
+      border-radius: 4px;
+    }
+
+    @keyframes bootProgressFill {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    @keyframes bootProgressFlow {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* Main Interface */
+    .main-interface {
+      opacity: 0;
+      padding: 2rem;
+      animation: interfaceReveal 3s ease-out 5s forwards;
+    }
+
+    @keyframes interfaceReveal {
+      0% { opacity: 0; transform: translateY(50px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Enhanced Matrix Background */
     .matrix-bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -2;
-      background: radial-gradient(circle at center, rgba(0,191,255,0.03) 0%, rgba(0,0,0,0.8) 70%);
-      animation: matrixShift 20s linear infinite;
+      z-index: -3;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(0,191,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(0,100,255,0.05) 0%, transparent 50%);
+      animation: matrixShift 30s linear infinite;
     }
-    
+
     @keyframes matrixShift {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 100% 100%; }
+      0% { 
+        background-position: 0% 0%, 100% 100%, 50% 50%; 
+        filter: hue-rotate(0deg);
+      }
+      50% { 
+        background-position: 100% 100%, 0% 0%, 100% 0%; 
+        filter: hue-rotate(90deg);
+      }
+      100% { 
+        background-position: 0% 0%, 100% 100%, 50% 50%; 
+        filter: hue-rotate(0deg);
+      }
     }
-    
-    /* Floating particles */
+
+    /* Floating Code Rain */
+    .code-rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .code-column {
+      position: absolute;
+      top: -100vh;
+      color: #00BFFF;
+      font-size: 14px;
+      line-height: 20px;
+      animation: codeRainFall linear infinite;
+      opacity: 0.3;
+      text-shadow: 0 0 5px #00BFFF;
+    }
+
+    @keyframes codeRainFall {
+      0% { transform: translateY(-100vh); opacity: 0; }
+      10% { opacity: 0.3; }
+      90% { opacity: 0.1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+
+    /* Enhanced Particles */
     .particles {
       position: fixed;
       top: 0;
@@ -47,293 +190,229 @@
       z-index: -1;
       pointer-events: none;
     }
-    
+
     .particle {
       position: absolute;
       background: #00BFFF;
       border-radius: 50%;
-      animation: float 15s infinite linear;
+      animation: particleFloat 20s infinite linear;
     }
-    
-    @keyframes float {
+
+    .particle.special {
+      background: radial-gradient(circle, #00FFFF, #00BFFF);
+      animation: particleSpecial 15s infinite ease-in-out;
+    }
+
+    @keyframes particleFloat {
       0% {
-        transform: translateY(100vh) rotate(0deg);
+        transform: translateY(100vh) rotate(0deg) scale(0);
         opacity: 0;
       }
       10% {
         opacity: 1;
+        transform: translateY(90vh) rotate(36deg) scale(1);
       }
       90% {
-        opacity: 1;
+        opacity: 0.8;
+        transform: translateY(10vh) rotate(324deg) scale(1);
       }
       100% {
-        transform: translateY(-10vh) rotate(360deg);
+        transform: translateY(-10vh) rotate(360deg) scale(0);
         opacity: 0;
       }
     }
-    
-    h1 {
-      text-align: center;
-      letter-spacing: 3px;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      color: #00BFFF;
-      text-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF;
-      animation: neonPulse 2s infinite alternate ease-in-out;
-      margin-bottom: 2rem;
-      position: relative;
-    }
-    
-    h1::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 120%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #00BFFF, transparent);
-      transform: translate(-50%, -50%);
-      animation: scanLine 3s infinite;
-    }
-    
-    @keyframes scanLine {
-      0%, 100% { opacity: 0; width: 0%; }
-      50% { opacity: 1; width: 120%; }
-    }
-    
-    @keyframes neonPulse {
-      from {
-        text-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF;
-        transform: scale(1);
+
+    @keyframes particleSpecial {
+      0%, 100% {
+        transform: translateY(100vh) rotate(0deg) scale(0);
+        opacity: 0;
+        box-shadow: 0 0 0px #00FFFF;
       }
-      to {
-        text-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF;
-        transform: scale(1.02);
+      50% {
+        transform: translateY(50vh) rotate(180deg) scale(1.5);
+        opacity: 1;
+        box-shadow: 0 0 20px #00FFFF;
       }
     }
-    
+
+    /* Enhanced Logo */
     .animated-logo {
       display: block;
       margin: 0 auto 2rem;
-      width: 120px;
-      height: 120px;
-      animation: logoRotate 8s linear infinite;
-      filter: drop-shadow(0 0 15px #00BFFF);
+      width: 150px;
+      height: 150px;
+      animation: logoQuantum 12s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px #00BFFF) drop-shadow(0 0 40px #00FFFF);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.5s ease;
     }
-    
+
     .animated-logo:hover {
-      transform: scale(1.1);
-      filter: drop-shadow(0 0 25px #00BFFF);
+      transform: scale(1.2) rotate(45deg);
+      filter: drop-shadow(0 0 30px #00FFFF) drop-shadow(0 0 60px #FFFFFF);
+      animation-duration: 2s;
     }
-    
-    @keyframes logoRotate {
+
+    @keyframes logoQuantum {
       0% {
         transform: rotate(0deg) scale(1);
-        filter: drop-shadow(0 0 10px #00BFFF);
+        filter: drop-shadow(0 0 15px #00BFFF) drop-shadow(0 0 30px #00FFFF);
       }
       25% {
-        transform: rotate(90deg) scale(1.05);
-        filter: drop-shadow(0 0 20px #00BFFF);
+        transform: rotate(90deg) scale(1.1);
+        filter: drop-shadow(0 0 25px #00FFFF) drop-shadow(0 0 50px #FFFFFF);
       }
       50% {
-        transform: rotate(180deg) scale(1);
-        filter: drop-shadow(0 0 15px #00BFFF);
+        transform: rotate(180deg) scale(0.9);
+        filter: drop-shadow(0 0 20px #FFFFFF) drop-shadow(0 0 40px #00BFFF);
       }
       75% {
         transform: rotate(270deg) scale(1.05);
-        filter: drop-shadow(0 0 20px #00BFFF);
+        filter: drop-shadow(0 0 30px #00BFFF) drop-shadow(0 0 60px #00FFFF);
       }
       100% {
         transform: rotate(360deg) scale(1);
-        filter: drop-shadow(0 0 10px #00BFFF);
+        filter: drop-shadow(0 0 15px #00BFFF) drop-shadow(0 0 30px #00FFFF);
       }
     }
-    
-    .console {
-      max-width: 1000px;
-      margin: 2rem auto;
-      background: linear-gradient(135deg, rgba(0,191,255,0.1), rgba(0,191,255,0.03));
-      padding: 2.5rem;
-      border: 2px solid #00BFFF;
-      box-shadow: 
-        0 0 20px rgba(0,191,255,0.3),
-        inset 0 0 20px rgba(0,191,255,0.05);
-      border-radius: 12px;
+
+    /* Enhanced Title */
+    h1 {
+      text-align: center;
+      letter-spacing: 4px;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      color: #00BFFF;
+      text-shadow: 
+        0 0 10px #00BFFF, 
+        0 0 20px #00BFFF, 
+        0 0 40px #00BFFF,
+        0 0 80px #00FFFF;
+      animation: titleQuantumPulse 3s infinite ease-in-out;
+      margin-bottom: 2rem;
       position: relative;
-      backdrop-filter: blur(5px);
+      background: linear-gradient(45deg, #00BFFF, #00FFFF, #FFFFFF, #00FFFF, #00BFFF);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    
+
+    h1::before, h1::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00BFFF, #00FFFF, #00BFFF, transparent);
+      animation: titleScanLine 4s infinite;
+    }
+
+    h1::before {
+      left: -120px;
+      transform: translateY(-50%);
+    }
+
+    h1::after {
+      right: -120px;
+      transform: translateY(-50%);
+    }
+
+    @keyframes titleQuantumPulse {
+      0%, 100% {
+        transform: scale(1) rotateX(0deg);
+        background-position: 0% 50%;
+        text-shadow: 
+          0 0 10px #00BFFF, 
+          0 0 20px #00BFFF, 
+          0 0 40px #00BFFF;
+      }
+      50% {
+        transform: scale(1.05) rotateX(5deg);
+        background-position: 100% 50%;
+        text-shadow: 
+          0 0 20px #00FFFF, 
+          0 0 40px #00FFFF, 
+          0 0 80px #FFFFFF;
+      }
+    }
+
+    @keyframes titleScanLine {
+      0%, 100% { opacity: 0; width: 0; }
+      50% { opacity: 1; width: 100px; }
+    }
+
+    /* Enhanced Console */
+    .console {
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: 
+        linear-gradient(135deg, rgba(0,191,255,0.15), rgba(0,255,255,0.05)),
+        linear-gradient(45deg, rgba(0,100,200,0.1), transparent);
+      padding: 3rem;
+      border: 3px solid #00BFFF;
+      box-shadow: 
+        0 0 30px rgba(0,191,255,0.4),
+        inset 0 0 30px rgba(0,191,255,0.1),
+        0 0 60px rgba(0,255,255,0.2);
+      border-radius: 15px;
+      position: relative;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
     .console::before {
       content: '';
       position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: linear-gradient(45deg, #00BFFF, transparent, #00BFFF, transparent);
-      border-radius: 12px;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      background: linear-gradient(45deg, #00BFFF, #00FFFF, #FFFFFF, #00FFFF, #00BFFF);
+      background-size: 400% 400%;
+      border-radius: 15px;
       z-index: -1;
-      animation: borderGlow 4s linear infinite;
+      animation: consoleBorderFlow 6s linear infinite;
     }
-    
-    @keyframes borderGlow {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 400% 400%; }
+
+    .console::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(0,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(0,191,255,0.1) 0%, transparent 50%);
+      animation: consoleInternalGlow 8s ease-in-out infinite;
     }
-    
-    .console-line {
-      margin: 0.8rem 0;
-      animation: typewriter 2s steps(40, end) forwards;
-      overflow: hidden;
-      white-space: nowrap;
-      border-right: 3px solid #00BFFF;
-      position: relative;
-      transition: all 0.3s ease;
+
+    @keyframes consoleBorderFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
-    
-    .console-line:hover {
-      color: #00FFFF;
-      text-shadow: 0 0 8px #00FFFF;
-      transform: translateX(10px);
+
+    @keyframes consoleInternalGlow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
     }
-    
-    .console-line.typed {
-      animation: none;
-      border-right: none;
-    }
-    
-    .prompt::before {
-      content: '> ';
-      color: #00FF00;
-      font-weight: bold;
-      text-shadow: 0 0 5px #00FF00;
-    }
-    
+
+    /* Enhanced Status Bar */
     .status-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
       margin: 2rem 0;
-      padding: 1rem;
-      background: rgba(0,191,255,0.05);
-      border-radius: 8px;
-      border: 1px solid rgba(0,191,255,0.3);
-    }
-    
-    .status-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem;
-      background: rgba(0,0,0,0.5);
-      border-radius: 4px;
-      border-left: 3px solid #00BFFF;
-    }
-    
-    .status-value {
-      font-weight: bold;
-      color: #00FF00;
-      text-shadow: 0 0 5px #00FF00;
-    }
-    
-    .progress-bar {
-      width: 100%;
-      height: 20px;
-      background: rgba(0,0,0,0.8);
+      padding: 1.5rem;
+      background: rgba(0,0,0,0.7);
       border-radius: 10px;
-      overflow: hidden;
-      margin: 1rem 0;
-      border: 1px solid #00BFFF;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #00BFFF, #00FFFF, #00BFFF);
-      background-size: 200% 100%;
-      animation: progressFlow 2s linear infinite, progressLoad 4s ease-in-out forwards;
-      border-radius: inherit;
-    }
-    
-    @keyframes progressFlow {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-    
-    @keyframes progressLoad {
-      0% { width: 0%; }
-      100% { width: 100%; }
-    }
-    
-    .scanline {
-      animation: blink 0.8s infinite;
-      font-size: 1.2em;
-      color: #00FF00;
-    }
-    
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0.3; }
-    }
-    
-    @keyframes typewriter {
-      0% { 
-        width: 0; 
-        border-right-color: #00BFFF;
-      }
-      99% { 
-        border-right-color: #00BFFF;
-      }
-      100% { 
-        width: 100%; 
-        border-right-color: transparent;
-      }
-    }
-    
-    .footer {
-      margin-top: 3rem;
-      border-top: 2px solid #00BFFF;
-      padding-top: 2rem;
-      font-size: 1rem;
-      text-align: center;
-      line-height: 2;
-      animation: slideUp 1s ease-out;
-    }
-    
-    @keyframes slideUp {
-      from { 
-        opacity: 0; 
-        transform: translateY(30px); 
-      }
-      to { 
-        opacity: 1; 
-        transform: translateY(0); 
-      }
-    }
-    
-    .link-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 2rem;
-      margin: 1.5rem 0;
-    }
-    
-    .icon-link {
-      display: flex;
-      align-items: center;
-      padding: 1rem 1.5rem;
-      background: rgba(0,191,255,0.1);
-      border: 1px solid #00BFFF;
-      border-radius: 8px;
-      text-decoration: none;
-      color: #00BFFF;
-      transition: all 0.3s ease;
+      border: 2px solid rgba(0,191,255,0.5);
       position: relative;
       overflow: hidden;
     }
-    
-    .icon-link::before {
+
+    .status-bar::before {
       content: '';
       position: absolute;
       top: 0;
@@ -341,68 +420,274 @@
       width: 100%;
       height: 100%;
       background: linear-gradient(90deg, transparent, rgba(0,191,255,0.2), transparent);
-      transition: left 0.5s ease;
+      animation: statusScan 3s ease-in-out infinite;
     }
-    
-    .icon-link:hover::before {
-      left: 100%;
+
+    @keyframes statusScan {
+      0% { left: -100%; }
+      100% { left: 100%; }
     }
-    
-    .icon-link:hover {
-      background: rgba(0,191,255,0.2);
-      box-shadow: 0 0 15px rgba(0,191,255,0.4);
-      transform: translateY(-3px);
-      color: #00FFFF;
-    }
-    
-    .icon-link img {
-      width: 24px;
-      height: 24px;
-      margin-right: 10px;
-      filter: brightness(0) saturate(100%) invert(58%) sepia(96%) saturate(3784%) hue-rotate(180deg);
-    }
-    
-    .glow {
-      text-shadow: 0 0 15px #00BFFF;
-      font-weight: bold;
-      animation: textGlow 3s ease-in-out infinite alternate;
-    }
-    
-    @keyframes textGlow {
-      from { text-shadow: 0 0 15px #00BFFF, 0 0 25px #00BFFF; }
-      to { text-shadow: 0 0 20px #00FFFF, 0 0 35px #00FFFF; }
-    }
-    
-    .terminal-border {
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: rgba(0,191,255,0.05);
+      border-radius: 8px;
+      border: 1px solid rgba(0,191,255,0.3);
       border-left: 4px solid #00BFFF;
-      padding-left: 1.5rem;
+      transition: all 0.3s ease;
       position: relative;
     }
-    
-    .terminal-border::before {
-      content: '';
-      position: absolute;
-      left: -4px;
-      top: 0;
-      width: 4px;
-      height: 100%;
-      background: linear-gradient(180deg, #00BFFF, #00FFFF, #00BFFF);
-      animation: borderPulse 2s ease-in-out infinite;
+
+    .status-item:hover {
+      background: rgba(0,191,255,0.15);
+      border-left-color: #00FFFF;
+      transform: translateX(5px);
+      box-shadow: 0 0 15px rgba(0,191,255,0.3);
     }
-    
-    @keyframes borderPulse {
+
+    .status-value {
+      font-weight: bold;
+      color: #00FF00;
+      text-shadow: 0 0 8px #00FF00;
+      animation: statusValuePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes statusValuePulse {
       0%, 100% { opacity: 0.8; }
       50% { opacity: 1; }
     }
-    
-    /* Responsive design */
+
+    /* Enhanced Console Lines */
+    .console-line {
+      margin: 1rem 0;
+      animation: typewriter 3s steps(60, end) forwards;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 3px solid #00BFFF;
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .console-line:hover {
+      color: #00FFFF;
+      text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF;
+      transform: translateX(15px);
+      background: rgba(0,191,255,0.1);
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+
+    .console-line.typed {
+      animation: none;
+      border-right: none;
+    }
+
+    .console-line.glitch {
+      animation: glitchEffect 0.3s ease-in-out;
+    }
+
+    @keyframes glitchEffect {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-2px); color: #ff0000; }
+      40% { transform: translateX(2px); color: #00ff00; }
+      60% { transform: translateX(-1px); color: #0000ff; }
+      80% { transform: translateX(1px); color: #ffff00; }
+    }
+
+    .prompt::before {
+      content: '> ';
+      color: #00FF00;
+      font-weight: bold;
+      text-shadow: 0 0 8px #00FF00;
+      animation: promptBlink 1s infinite;
+    }
+
+    @keyframes promptBlink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.5; }
+    }
+
+    /* Enhanced Progress Bar */
+    .progress-bar {
+      width: 100%;
+      height: 25px;
+      background: rgba(0,0,0,0.8);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      border: 2px solid #00BFFF;
+      position: relative;
+    }
+
+    .progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(0,191,255,0.3), transparent);
+      animation: progressScan 2s linear infinite;
+    }
+
+    @keyframes progressScan {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00BFFF, #00FFFF, #FFFFFF, #00FFFF, #00BFFF);
+      background-size: 300% 100%;
+      animation: progressFlow 2s linear infinite, progressLoad 6s ease-in-out forwards;
+      border-radius: inherit;
+      position: relative;
+    }
+
+    @keyframes progressFlow {
+      0% { background-position: 300% 0; }
+      100% { background-position: -300% 0; }
+    }
+
+    @keyframes progressLoad {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    /* Audio Controls */
+    .audio-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+    }
+
+    .audio-btn {
+      background: rgba(0,191,255,0.2);
+      border: 1px solid #00BFFF;
+      color: #00BFFF;
+      padding: 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .audio-btn:hover {
+      background: rgba(0,191,255,0.4);
+      box-shadow: 0 0 10px rgba(0,191,255,0.5);
+    }
+
+    /* Enhanced Footer */
+    .footer {
+      margin-top: 4rem;
+      border-top: 3px solid #00BFFF;
+      padding-top: 2rem;
+      font-size: 1.1rem;
+      text-align: center;
+      line-height: 2.5;
+      animation: footerSlideUp 2s ease-out;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #00BFFF, #00FFFF, #00BFFF);
+      animation: footerBorderFlow 4s linear infinite;
+    }
+
+    @keyframes footerBorderFlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    @keyframes footerSlideUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(50px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    .link-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .icon-link {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      background: rgba(0,191,255,0.1);
+      border: 2px solid #00BFFF;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #00BFFF;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .icon-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,255,0.3), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .icon-link:hover::before {
+      left: 100%;
+    }
+
+    .icon-link:hover {
+      background: rgba(0,191,255,0.3);
+      box-shadow: 0 0 25px rgba(0,191,255,0.6);
+      transform: translateY(-5px) scale(1.05);
+      color: #00FFFF;
+      border-color: #00FFFF;
+    }
+
+    .icon-link img {
+      width: 28px;
+      height: 28px;
+      margin-right: 12px;
+      filter: brightness(0) saturate(100%) invert(58%) sepia(96%) saturate(3784%) hue-rotate(180deg);
+      transition: all 0.3s ease;
+    }
+
+    .icon-link:hover img {
+      filter: brightness(0) saturate(100%) invert(100%);
+      transform: scale(1.2);
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
       body {
         padding: 1rem;
       }
       
       .console {
-        padding: 1.5rem;
+        padding: 2rem;
         margin: 1rem auto;
       }
       
@@ -415,163 +700,575 @@
       .status-bar {
         grid-template-columns: 1fr;
       }
+
+      .boot-progress {
+        width: 90%;
+      }
+
+      h1::before, h1::after {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="matrix-bg"></div>
-  <div class="particles"></div>
-  
-  <svg class="animated-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <radialGradient id="sparkPulse" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#00FFFF" stop-opacity="1"/>
-        <stop offset="50%" stop-color="#00BFFF" stop-opacity="0.8"/>
-        <stop offset="100%" stop-color="#000080" stop-opacity="0"/>
-      </radialGradient>
-      <filter id="glow">
-        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-        <feMerge>
-          <feMergeNode in="coloredBlur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-    </defs>
-    <circle cx="100" cy="100" r="85" fill="url(#sparkPulse)" stroke="#00BFFF" stroke-width="3" filter="url(#glow)" opacity="0.8" />
-    <polygon points="100,25 115,80 170,80 125,115 140,170 100,140 60,170 75,115 30,80 85,80" fill="#00BFFF" filter="url(#glow)" stroke="#00FFFF" stroke-width="1">
-    </polygon>
-  </svg>
-  
-  <h1>☣ RAKSTRIKE ENGAGED ☣</h1>
-  
-  <div class="console terminal-border">
-    <div class="status-bar">
-      <div class="status-item">
-        <span>Connection</span>
-        <span class="status-value">SECURE</span>
-      </div>
-      <div class="status-item">
-        <span>Encryption</span>
-        <span class="status-value">AES-256</span>
-      </div>
-      <div class="status-item">
-        <span>Ping</span>
-        <span class="status-value">12ms</span>
-      </div>
-      <div class="status-item">
-        <span>Nodes</span>
-        <span class="status-value">847</span>
-      </div>
+  <!-- Boot Screen -->
+  <div class="boot-screen" id="bootScreen">
+    <svg class="boot-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bootSparkPulse" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#00FFFF" stop-opacity="1"/>
+          <stop offset="50%" stop-color="#00BFFF" stop-opacity="0.8"/>
+          <stop offset="100%" stop-color="#000080" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="bootGlow">
+          <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <circle cx="100" cy="100" r="85" fill="url(#bootSparkPulse)" stroke="#00BFFF" stroke-width="4" filter="url(#bootGlow)" opacity="0.9" />
+      <polygon points="100,25 115,80 170,80 125,115 140,170 100,140 60,170 75,115 30,80 85,80" fill="#00BFFF" filter="url(#bootGlow)" stroke="#00FFFF" stroke-width="2">
+      </polygon>
+    </svg>
+    
+    <div class="boot-text">RAKSTRIKE QUANTUM CORE</div>
+    <div class="boot-text" style="font-size: 1rem; margin-bottom: 3rem;">Initializing Neural Matrix...</div>
+    
+    <div class="boot-progress">
+      <div class="boot-progress-fill"></div>
     </div>
-    
-    <p class="console-line">Initializing quantum encryption protocols...</p>
-    <p class="console-line">Establishing secure darknet tunnels...</p>
-    <p class="console-line">Bypassing international firewalls...</p>
-    <p class="console-line">Synchronizing with satellite networks...</p>
-    
-    <div class="progress-bar">
-      <div class="progress-fill"></div>
-    </div>
-    
-    <p class="console-line glow">Identity confirmed: <strong>Nizrak</strong> | Access Level: OMEGA</p>
-    <p class="console-line">Biometric scan: <span style="color: #00FF00">VERIFIED</span></p>
-    <p class="console-line">Neural interface: <span style="color: cyan">SYNCHRONIZED</span></p>
-    <br>
-    <p class="console-line prompt">Operation: Global surveillance matrix</p>
-    <p class="console-line prompt">Target: Worldwide data streams</p>
-    <p class="console-line prompt">Authorization: OMEGA CLEARANCE GRANTED</p>
-    <p class="console-line prompt">Threat Level: DEFCON 2</p>
-    <br>
-    <p class="console-line"><span class="scanline">█</span> System ready. Awaiting quantum commands...</p>
   </div>
 
-  <div class="footer">
-    <div class="link-container">
-      <a href="mailto:nizrak@rakstrike.icu" class="icon-link">
-        <img src="https://img.icons8.com/ios-filled/50/ffffff/new-post.png" alt="Email"/>
-        nizrak@rakstrike.icu
-      </a>
-      <a href="https://discord.gg/t64cPpCYMy" target="_blank" class="icon-link">
-        <img src="https://img.icons8.com/ios-glyphs/30/ffffff/discord-logo.png" alt="Discord"/>
-        Join Discord Server
-      </a>
-      <a href="https://rakstrike.icu" class="icon-link">
-        <img src="https://img.icons8.com/ios-filled/50/ffffff/domain.png" alt="Domain"/>
-        rakstrike.icu
-      </a>
+  <!-- Main Interface -->
+  <div class="main-interface">
+    <div class="matrix-bg"></div>
+    <div class="code-rain"></div>
+    <div class="particles"></div>
+    
+    <!-- Audio Controls -->
+    <div class="audio-controls">
+      <button class="audio-btn" id="toggleAmbient">🔊</button>
+      <button class="audio-btn" id="toggleEffects">🎵</button>
     </div>
-    <p class="glow">🔒 QUANTUM ENCRYPTION ACTIVE — All transmissions secured via neural blockchain.</p>
+    
+    <svg class="animated-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="sparkPulse" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#00FFFF" stop-opacity="1"/>
+          <stop offset="50%" stop-color="#00BFFF" stop-opacity="0.8"/>
+          <stop offset="100%" stop-color="#000080" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <circle cx="100" cy="100" r="85" fill="url(#sparkPulse)" stroke="#00BFFF" stroke-width="4" filter="url(#glow)" opacity="0.9" />
+      <polygon points="100,25 115,80 170,80 125,115 140,170 100,140 60,170 75,115 30,80 85,80" fill="#00BFFF" filter="url(#glow)" stroke="#00FFFF" stroke-width="2">
+      </polygon>
+    </svg>
+    
+    <h1>☣ RAKSTRIKE QUANTUM ENGAGED ☣</h1>
+    
+    <div class="console">
+      <div class="status-bar">
+        <div class="status-item">
+          <span>Quantum Connection</span>
+          <span class="status-value">SECURE</span>
+        </div>
+        <div class="status-item">
+          <span>Neural Encryption</span>
+          <span class="status-value">AES-512</span>
+        </div>
+        <div class="status-item">
+          <span>Matrix Ping</span>
+          <span class="status-value">8ms</span>
+        </div>
+        <div class="status-item">
+          <span>Active Nodes</span>
+          <span class="status-value">1247</span>
+        </div>
+        <div class="status-item">
+          <span>Threat Level</span>
+          <span class="status-value">DEFCON 2</span>
+        </div>
+        <div class="status-item">
+          <span>Neural Sync</span>
+          <span class="status-value">98.7%</span>
+        </div>
+      </div>
+      
+      <p class="console-line glow">Identity confirmed: <strong>Nizrak</strong> | Access Level: OMEGA CLEARANCE</p>
+      <p class="console-line">Biometric scan: <span style="color: #00FF00">VERIFIED ✓</span></p>
+      <p class="console-line">Neural interface: <span style="color: cyan">SYNCHRONIZED ✓</span></p>
+      <p class="console-line">Quantum entanglement: <span style="color: #FFD700">ACTIVE ✓</span></p>
+      <br>
+      <p class="console-line prompt">Operation: Global surveillance matrix</p>
+      <p class="console-line prompt">Target: Worldwide data streams</p>
+      <p class="console-line prompt">Authorization: OMEGA CLEARANCE GRANTED</p>
+      <p class="console-line prompt">Threat Level: DEFCON 2 - HIGH ALERT</p>
+      <p class="console-line prompt">Neural Bandwidth: 847.3 THz</p>
+      <br>
+      <p class="console-line"><span class="scanline">█</span> Quantum system ready. Awaiting neural commands...</p>
+    </div>
+
+    <div class="footer">
+      <div class="link-container">
+        <a href="mailto:nizrak@rakstrike.icu" class="icon-link">
+          <img src="https://img.icons8.com/ios-filled/50/ffffff/new-post.png" alt="Email"/>
+          nizrak@rakstrike.icu
+        </a>
+        <a href="https://discord.gg/t64cPpCYMy" target="_blank" class="icon-link">
+          <img src="https://img.icons8.com/ios-glyphs/30/ffffff/discord-logo.png" alt="Discord"/>
+          Join Neural Network
+        </a>
+        <a href="https://rakstrike.icu" class="icon-link">
+          <img src="https://img.icons8.com/ios-filled/50/ffffff/domain.png" alt="Domain"/>
+          rakstrike.icu
+        </a>
+      </div>
+      <p class="glow">🔒 QUANTUM NEURAL ENCRYPTION ACTIVE — All transmissions secured via quantum blockchain.</p>
+      <p style="margin-top: 1rem; opacity: 0.7;">⚡ Neural bandwidth optimized for maximum data throughput ⚡</p>
+    </div>
   </div>
+
+  <!-- Audio Elements -->
+  <audio id="ambientSound" loop>
+    <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBj2U2u/Dci0FJ3zK8N2ZPwkUXrzm4qBIEglCpN7yuWAcBjuV3PDAYTYRKShrAAFtcXJzaTJEfnqPn3cLYDM3YiTBUNqFXRoBKXLQ8d2IYhsaXaZ0T9WyTxEDZZJoYzJShQpAX5KQe5RjOyh+TEPMuxgLGZqTIzl4TEDEuhcLJpeTJzpOSmPKxJUfFd6iQmJBLFaDBSGLPjLBJBu9n1dTkwmClJF0Xxs0JiY3IltE77pYREk0fgqBSTOJkSlFR8HDbgBBQEAtQYz5JxrYqRXtpxXtpkDAz6ZSKjlDk+ylQJKqOQQShh0Oj2FZQR2BoTRAZn9vXxkNbNW1" type="audio/wav">
+  </audio>
+  
+  <audio id="bootSound">
+    <source src="data:audio/wav;base64,UklGRi4DAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQoDAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBj2U2u/Dci0FJ3zK8N2ZPwkUXrPm4qJCEgp/zNqDOgQRVZ9rTtezUhAOYI9mYzlPf1M2Kd5xYQM5Ja6xSj89eRkIhb9bQNBNWwJ4P0i2IjHUmX0Y" type="audio/wav">
+  </audio>
 
   <script>
-    // Create floating particles
-    function createParticles() {
+    // Enhanced Audio System
+    class AudioSystem {
+      constructor() {
+        this.context = null;
+        this.ambientEnabled = true;
+        this.effectsEnabled = true;
+        this.oscillators = [];
+        this.initAudio();
+      }
+
+      initAudio() {
+        try {
+          this.context = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+          console.log('Web Audio API not supported');
+        }
+      }
+
+      playBootSound() {
+        if (!this.context || !this.effectsEnabled) return;
+        
+        const oscillator = this.context.createOscillator();
+        const gainNode = this.context.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.context.destination);
+        
+        oscillator.frequency.setValueAtTime(200, this.context.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(800, this.context.currentTime + 0.5);
+        oscillator.frequency.exponentialRampToValueAtTime(400, this.context.currentTime + 1);
+        
+        gainNode.gain.setValueAtTime(0.3, this.context.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + 1);
+        
+        oscillator.start(this.context.currentTime);
+        oscillator.stop(this.context.currentTime + 1);
+      }
+
+      playTypewriterSound() {
+        if (!this.context || !this.effectsEnabled) return;
+        
+        const oscillator = this.context.createOscillator();
+        const gainNode = this.context.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.context.destination);
+        
+        oscillator.frequency.setValueAtTime(800 + Math.random() * 200, this.context.currentTime);
+        oscillator.type = 'square';
+        
+        gainNode.gain.setValueAtTime(0.1, this.context.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + 0.1);
+        
+        oscillator.start(this.context.currentTime);
+        oscillator.stop(this.context.currentTime + 0.1);
+      }
+
+      playAmbientDrone() {
+        if (!this.context || !this.ambientEnabled) return;
+        
+        const oscillator1 = this.context.createOscillator();
+        const oscillator2 = this.context.createOscillator();
+        const gainNode = this.context.createGain();
+        
+        oscillator1.connect(gainNode);
+        oscillator2.connect(gainNode);
+        gainNode.connect(this.context.destination);
+        
+        oscillator1.frequency.setValueAtTime(60, this.context.currentTime);
+        oscillator2.frequency.setValueAtTime(120.5, this.context.currentTime);
+        oscillator1.type = 'sine';
+        oscillator2.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0.02, this.context.currentTime);
+        
+        oscillator1.start(this.context.currentTime);
+        oscillator2.start(this.context.currentTime);
+        
+        this.oscillators.push({ osc1: oscillator1, osc2: oscillator2, gain: gainNode });
+        
+        setTimeout(() => {
+          gainNode.gain.exponentialRampToValueAtTime(0.001, this.context.currentTime + 1);
+          setTimeout(() => {
+            oscillator1.stop();
+            oscillator2.stop();
+          }, 1000);
+        }, 8000);
+      }
+
+      toggleAmbient() {
+        this.ambientEnabled = !this.ambientEnabled;
+        return this.ambientEnabled;
+      }
+
+      toggleEffects() {
+        this.effectsEnabled = !this.effectsEnabled;
+        return this.effectsEnabled;
+      }
+    }
+
+    // Initialize audio system
+    const audioSystem = new AudioSystem();
+
+    // Enhanced Code Rain
+    function createCodeRain() {
+      const container = document.querySelector('.code-rain');
+      const codeChars = '01RAKSTRIKE{}[]()<>+-*/=QUANTUM_NEURAL_MATRIX_ENGAGE';
+      const columns = Math.floor(window.innerWidth / 20);
+      
+      for (let i = 0; i < columns; i++) {
+        const column = document.createElement('div');
+        column.className = 'code-column';
+        column.style.left = (i * 20) + 'px';
+        column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        column.style.animationDelay = Math.random() * 2 + 's';
+        
+        let content = '';
+        for (let j = 0; j < 20; j++) {
+          content += codeChars[Math.floor(Math.random() * codeChars.length)] + '<br>';
+        }
+        column.innerHTML = content;
+        
+        container.appendChild(column);
+      }
+    }
+
+    // Enhanced Particles
+    function createEnhancedParticles() {
       const container = document.querySelector('.particles');
-      const particleCount = 20;
+      const particleCount = 30;
       
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
-        particle.className = 'particle';
+        const isSpecial = Math.random() < 0.2;
+        
+        particle.className = isSpecial ? 'particle special' : 'particle';
         particle.style.left = Math.random() * 100 + '%';
-        particle.style.width = particle.style.height = (Math.random() * 4 + 1) + 'px';
-        particle.style.animationDelay = Math.random() * 15 + 's';
-        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particle.style.width = particle.style.height = (Math.random() * (isSpecial ? 8 : 4) + 2) + 'px';
+        particle.style.animationDelay = Math.random() * 20 + 's';
+        particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
+        
         container.appendChild(particle);
       }
     }
-    
-    // Animate console lines sequentially
+
+    // Boot Sequence
+    function startBootSequence() {
+      audioSystem.playBootSound();
+      
+      setTimeout(() => {
+        document.getElementById('bootScreen').classList.add('hidden');
+        audioSystem.playAmbientDrone();
+      }, 5000);
+    }
+
+    // Enhanced Console Animation
     function animateConsoleLines() {
       const lines = document.querySelectorAll('.console-line');
+      let totalDelay = 0;
+      
       lines.forEach((line, index) => {
-        line.style.animationDelay = (index * 0.3) + 's';
+        const delay = totalDelay;
+        line.style.animationDelay = delay + 's';
+        
+        // Add typewriter sound effect
+        setTimeout(() => {
+          const chars = line.textContent.length;
+          for (let i = 0; i < chars; i += 3) {
+            setTimeout(() => {
+              audioSystem.playTypewriterSound();
+            }, i * 50);
+          }
+        }, delay * 1000);
+        
         setTimeout(() => {
           line.classList.add('typed');
-        }, (index * 300) + 2000);
+        }, delay * 1000 + 3000);
+        
+        totalDelay += 0.4;
       });
     }
-    
-    // Add interactive logo click
+
+    // Enhanced Logo Interaction
     function setupLogoInteraction() {
       const logo = document.querySelector('.animated-logo');
+      let clickCount = 0;
+      
       logo.addEventListener('click', () => {
-        logo.style.animation = 'logoRotate 1s linear';
+        clickCount++;
+        audioSystem.playBootSound();
+        
+        logo.style.animation = 'logoQuantum 0.5s linear';
+        
+        if (clickCount >= 3) {
+          // Secret activation
+          document.body.style.filter = 'hue-rotate(180deg)';
+          setTimeout(() => {
+            document.body.style.filter = '';
+          }, 2000);
+          clickCount = 0;
+        }
+        
         setTimeout(() => {
-          logo.style.animation = 'logoRotate 8s linear infinite';
-        }, 1000);
+          logo.style.animation = 'logoQuantum 12s ease-in-out infinite';
+        }, 500);
       });
     }
-    
-    // Dynamic status updates
+
+    // Dynamic Status Updates
     function updateStatus() {
-      const pingElement = document.querySelector('.status-item:nth-child(3) .status-value');
-      const nodesElement = document.querySelector('.status-item:nth-child(4) .status-value');
+      const statusItems = {
+        ping: document.querySelector('.status-item:nth-child(3) .status-value'),
+        nodes: document.querySelector('.status-item:nth-child(4) .status-value'),
+        sync: document.querySelector('.status-item:nth-child(6) .status-value')
+      };
       
       setInterval(() => {
-        const ping = Math.floor(Math.random() * 20) + 8;
-        const nodes = Math.floor(Math.random() * 100) + 800;
-        pingElement.textContent = ping + 'ms';
-        nodesElement.textContent = nodes;
-      }, 3000);
+        const ping = Math.floor(Math.random() * 15) + 5;
+        const nodes = Math.floor(Math.random() * 200) + 1000;
+        const sync = (Math.random() * 2 + 97).toFixed(1);
+        
+        statusItems.ping.textContent = ping + 'ms';
+        statusItems.nodes.textContent = nodes;
+        statusItems.sync.textContent = sync + '%';
+      }, 2000);
     }
-    
-    // Initialize everything when page loads
-    document.addEventListener('DOMContentLoaded', () => {
-      createParticles();
-      animateConsoleLines();
-      setupLogoInteraction();
-      updateStatus();
-    });
-    
-    // Add glitch effect on hover
-    document.querySelectorAll('.console-line').forEach(line => {
-      line.addEventListener('mouseenter', () => {
-        line.style.textShadow = '2px 0 #ff0000, -2px 0 #00ffff';
+
+    // Glitch Effects
+    function addGlitchEffects() {
+      const lines = document.querySelectorAll('.console-line');
+      
+      setInterval(() => {
+        const randomLine = lines[Math.floor(Math.random() * lines.length)];
+        randomLine.classList.add('glitch');
+        
         setTimeout(() => {
-          line.style.textShadow = '';
-        }, 200);
+          randomLine.classList.remove('glitch');
+        }, 300);
+      }, 8000);
+    }
+
+    // Audio Controls
+    function setupAudioControls() {
+      const ambientBtn = document.getElementById('toggleAmbient');
+      const effectsBtn = document.getElementById('toggleEffects');
+      
+      ambientBtn.addEventListener('click', () => {
+        const enabled = audioSystem.toggleAmbient();
+        ambientBtn.textContent = enabled ? '🔊' : '🔇';
+        ambientBtn.style.opacity = enabled ? '1' : '0.5';
       });
+      
+      effectsBtn.addEventListener('click', () => {
+        const enabled = audioSystem.toggleEffects();
+        effectsBtn.textContent = enabled ? '🎵' : '🔇';
+        effectsBtn.style.opacity = enabled ? '1' : '0.5';
+      });
+    }
+
+    // Cursor Trail Effect
+    function createCursorTrail() {
+      const trail = [];
+      const trailLength = 10;
+      
+      document.addEventListener('mousemove', (e) => {
+        trail.push({ x: e.clientX, y: e.clientY, life: trailLength });
+        
+        if (trail.length > trailLength) {
+          trail.shift();
+        }
+      });
+      
+      function animateTrail() {
+        // Remove old trail elements
+        document.querySelectorAll('.cursor-trail').forEach(el => el.remove());
+        
+        trail.forEach((point, index) => {
+          if (point.life > 0) {
+            const trailElement = document.createElement('div');
+            trailElement.className = 'cursor-trail';
+            trailElement.style.cssText = `
+              position: fixed;
+              left: ${point.x}px;
+              top: ${point.y}px;
+              width: ${point.life}px;
+              height: ${point.life}px;
+              background: rgba(0, 191, 255, ${point.life / trailLength});
+              border-radius: 50%;
+              pointer-events: none;
+              z-index: 10000;
+              transform: translate(-50%, -50%);
+            `;
+            document.body.appendChild(trailElement);
+            point.life--;
+          }
+        });
+        
+        requestAnimationFrame(animateTrail);
+      }
+      
+      animateTrail();
+    }
+
+    // Matrix Digital Rain Effect
+    function enhanceMatrixBackground() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.zIndex = '-4';
+      canvas.style.opacity = '0.1';
+      document.body.appendChild(canvas);
+      
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      const matrix = "RAKSTRIKE01QUANTUM";
+      const matrixArray = matrix.split("");
+      const fontSize = 10;
+      const columns = canvas.width / fontSize;
+      const drops = [];
+      
+      for (let x = 0; x < columns; x++) {
+        drops[x] = 1;
+      }
+      
+      function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#00BFFF';
+        ctx.font = fontSize + 'px monospace';
+        
+        for (let i = 0; i < drops.length; i++) {
+          const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+      
+      setInterval(draw, 35);
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', () => {
+      startBootSequence();
+      createCodeRain();
+      createEnhancedParticles();
+      setupLogoInteraction();
+      setupAudioControls();
+      updateStatus();
+      addGlitchEffects();
+      createCursorTrail();
+      enhanceMatrixBackground();
+      
+      setTimeout(() => {
+        animateConsoleLines();
+      }, 6000);
+      
+      // Enable audio context on first user interaction
+      document.addEventListener('click', () => {
+        if (audioSystem.context && audioSystem.context.state === 'suspended') {
+          audioSystem.context.resume();
+        }
+      }, { once: true });
     });
+
+    // Window resize handler
+    window.addEventListener('resize', () => {
+      document.querySelector('.code-rain').innerHTML = '';
+      createCodeRain();
+    });
+
+    // Konami Code Easter Egg
+    let konamiCode = [];
+    const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+    
+    document.addEventListener('keydown', (e) => {
+      konamiCode.push(e.keyCode);
+      
+      if (konamiCode.length > konamiSequence.length) {
+        konamiCode.shift();
+      }
+      
+      if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
+        // Easter egg activated
+        document.body.style.animation = 'rainbow 2s infinite';
+        setTimeout(() => {
+          document.body.style.animation = '';
+        }, 10000);
+        konamiCode = [];
+      }
+    });
+
+    // Add rainbow animation for easter egg
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes rainbow {
+        0% { filter: hue-rotate(0deg); }
+        100% { filter: hue-rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
-</html>
+</html>>Initializing quantum encryption protocols...</p>
+      <p class="console-line">Establishing secure neural-link tunnels...</p>
+      <p class="console-line">Bypassing international firewall matrices...</p>
+      <p class="console-line">Synchronizing with orbital satellite networks...</p>
+      <p class="console-line">Activating advanced AI countermeasures...</p>
+      <p class="console-line">Loading quantum entanglement protocols...</p>
+      
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+      
+      <p class="console-line"
